@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<!-- this html defines a webpage that serves a neural language model. It assumes that you've already gone throgh train_and_export.ipynb to obtain the actual model. You can open it with your browser or serve it with SimpleHTTPServer, Twistd or dozens of other googlable frameworks -->
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.1.0/dist/tf.min.js"></script>
+
+</head>
+
+<body> 
+    <p id="text_area">TEMPORARY DEMO FOR YSDA SEM7</p>
+    <button id="my_btn" onclick="alert('NOT READY')"> DO IT!!!! </button>
+    
+    <script>
+    
+    var model;
+    document.addEventListener('DOMContentLoaded', async function() {
+        
+model = tf.sequential();
+model.add(tf.layers.dense({units: 10, inputShape: [2]}));
+model.add(tf.layers.reLU());
+model.add(tf.layers.dense({units: 1}));
+
+
+model.compile({optimizer: 'sgd', loss: 'meanSquaredError'});
+
+        });
+        
+    async function train_one_step() {
+        var loss = await model.trainOnBatch([tf.tensor2d([[0.5, -2.2]])], tf.tensor2d([[-2.2]]))
+        document.getElementById('text_area').textContent = loss;
+
+    }
+    var button = document.getElementById('my_btn');
+    button.onclick = async function() { await train_one_step()}
+    
+    
+
+    </script>
+    
+
+    
+</body>
+</html>
